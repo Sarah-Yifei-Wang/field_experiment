@@ -1,0 +1,1055 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Experiments and Causality: Problem Set 3},
+  pdfauthor={Alex, Micah and Scott},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Experiments and Causality: Problem Set 3}
+\author{Alex, Micah and Scott}
+\date{12/7/2020}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(data.table)}
+
+\KeywordTok{library}\NormalTok{(sandwich)}
+\KeywordTok{library}\NormalTok{(lmtest)}
+
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{library}\NormalTok{(patchwork)}
+
+\KeywordTok{library}\NormalTok{(foreign)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{peruvian-recycling}{%
+\section{1. Peruvian Recycling}\label{peruvian-recycling}}
+
+Look at \href{./readings/recycling_peru.pdf}{this article} about
+encouraging recycling in Peru. The paper contains two experiments, a
+``participation study'' and a ``participation intensity study.'' In this
+problem, we will focus on the latter study, whose results are contained
+in Table 4 in this problem. You will need to read the relevant section
+of the paper (starting on page 20 of the manuscript) in order to
+understand the experimental design and variables. (\emph{Note that
+``indicator variable'' is a synonym for ``dummy variable,'' in case you
+haven't seen this language before.})
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  In Column 3 of Table 4A, what is the estimated ATE of providing a
+  recycling bin on the average weight of recyclables turned in per
+  household per week, during the six-week treatment period? Provide a
+  95\% confidence interval.
+\end{enumerate}
+
+\textbf{Answer: The estimated ATE is 0.187. SE is 0.032. The 95\%
+confidence interval is 0.187 + 1.96 * 0.032= 0.250 and 0.187 - 1.96 *
+0.032= 0.124}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  In Column 3 of Table 4A, what is the estimated ATE of sending a text
+  message reminder on the average weight of recyclables turned in per
+  household per week? Provide a 95\% confidence interval.
+\end{enumerate}
+
+\textbf{Answer: The estimated ATE is -0.024. The 95\% confidence
+interval is (-0.102, 0.054)}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Which outcome measures in Table 4A show statistically significant
+  effects (at the 5\% level) of providing a recycling bin?
+\end{enumerate}
+
+\textbf{Answer: Percentage of visits turned in bag, Avg. no. of bins
+turned in per week, Avg. weight (in kg) of recyclables turned in per
+week, Avg. market value of recyclables given per week}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\item
+  Which outcome measures in Table 4A show statistically significant
+  effects (at the 5\% level) of sending text messages? \textbf{Answer:
+  None of them shows statistically significant effects (at the 5\%
+  level) of sending text messages}
+\item
+  Suppose that, during the two weeks before treatment, household A turns
+  in 2kg per week more recyclables than household B does, and suppose
+  that both households are otherwise identical (including being in the
+  same treatment group). From the model, how much more recycling do we
+  predict household A to have than household B, per week, during the six
+  weeks of treatment? Provide only a point estimate, as the confidence
+  interval would be a bit complicated. This question is designed to test
+  your understanding of slope coefficients in regression.
+\end{enumerate}
+
+**Answer: 0.281*2 = 0.562, so we expect household A to have 0.562 kg
+more than household B**
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  Suppose that the variable ``percentage of visits turned in bag,
+  baseline'' had been left out of the regression reported in Column 1.
+  What would you expect to happen to the results on providing a
+  recycling bin? Would you expect an increase or decrease in the
+  estimated ATE? Would you expect an increase or decrease in the
+  standard error? Explain our reasoning.
+\end{enumerate}
+
+\textbf{Answer: I think the estimated ATE will remain unchanged and the
+standard error will increase. Since providing a recycling bin is
+randomly assigned, it is independent of everything else. Therefore, we
+dont have to worry about omitted variables. However, we do expect the
+standard error to rise. With one variable left out, there is more
+variability (uncertainty) to explain by the treatment and we expect to
+see the standard error of our estimate to increase.} 7. In column 1 of
+Table 4A, would you say the variable ``has cell phone'' is a bad
+control? Explain your reasoning.
+
+\textbf{Answer: I don't think it is a bad control. Because ``has cell
+phone'' or not is not an outcome affected by the treatment. However, it
+does represent some design flaws because having cell phone may indicate
+the family financial ability, which may directly or indirectly indicate
+whether the family is able to afford recyclable goods}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{7}
+\tightlist
+\item
+  If we were to remove the ``has cell phone'' variable from the
+  regression, what would you expect to happen to the coefficient on
+  ``Any SMS message''? Would it go up or down? Explain your reasoning.
+\end{enumerate}
+
+\textbf{Answer: I think the coefficient would increase/go up because it
+would take some variance from the has cell phone variable. This is
+because ``any SMS message'' variable could pick up the information
+contained in the ``has cell phone'' variable.}
+
+\hypertarget{multifactor-experiments}{%
+\section{2. Multifactor Experiments}\label{multifactor-experiments}}
+
+Staying with the same experiment, now think about multifactor
+experiments.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  What is the full experimental design for this experiment? Tell us the
+  dimensions, such as 2x2x3. The full results appear in Panel 4B. We'll
+  note that the dimensions of an experiment are defined in terms of the
+  \emph{treatments that the experiment assigns}, not in terms of other
+  features about the data.
+\end{enumerate}
+
+\begin{quote}
+\textbf{Answer: This is a 3x3 dimension experiment with the following
+axes: 3 bin attributes {[}bin with, bin without sticker, or no bin{]}
+and 3 attributes for SMS {[}personalized sms, generic sms, or no sms{]}.
+The havecell is not included in the design dimensions because it is a
+pre-treatment covariate which is not included in the administration of
+treatment to subjects, or not an intervention}
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  In the results of Table 4B, describe the baseline category. That is,
+  in English, how would you describe the attributes of the group of
+  people for whom all dummy variables are equal to zero?
+\end{enumerate}
+
+\begin{quote}
+\textbf{Answer: They are those people who do not have a cell phone, who
+did not receive a bin, nor an SMS message}
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  In column (1) of Table 4B, interpret the magnitude of the coefficient
+  on ``bin without sticker.'' What does it mean?
+\end{enumerate}
+
+\begin{quote}
+\textbf{Answer: households that received a bin but with no sticker were
+3.5 percentage points more likely to turn in recyclables}
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  In column (1) of Table 4B, which seems to have a stronger treatment
+  effect, the recycling bin with message sticker, or the recycling bin
+  without sticker? How large is the magnitude of the estimated
+  difference?
+\end{enumerate}
+
+\begin{quote}
+\textbf{Answer: The recycling bin with message sticker have a stronger
+effect. The magnitude is 2 percentage point. The coefficient for the
+recycling bin with a sticker is 0.055 with a standard error of 0.015 and
+the coefficient for a recycling bin without a sticker is 0.035 with a
+standard error of 0.015.}
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Is this difference you just described statistically significant?
+  Explain which piece of information in the table allows you to answer
+  this question.
+\end{enumerate}
+
+\begin{quote}
+\textbf{Answer: It is not statistically significant. The p-value for
+F-test is 0.31. So the differences in treatment effects are not
+significant at the 5\% significance level.}
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  Notice that Table 4C is described as results from ``fully saturated''
+  models. What does this mean? Looking at the list of variables in the
+  table, explain in what sense the model is ``saturated.''
+\end{enumerate}
+
+\begin{quote}
+\textbf{Answer: A fully saturated model is a model that has as many
+parameters as data points. In this case, the model creates a dummy
+variable for every combination of variables, so it is saturated}
+\end{quote}
+
+\hypertarget{now-do-it-with-data}{%
+\section{3. Now! Do it with data}\label{now-do-it-with-data}}
+
+Download the data set for the recycling study in the previous problem,
+obtained from the authors. We'll be focusing on the outcome variable
+Y=``number of bins turned in per week'' (avg\_bins\_treat).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{d <-}\StringTok{ }\NormalTok{foreign}\OperatorTok{::}\KeywordTok{read.dta}\NormalTok{(}\StringTok{"./data/karlan_data_subset_for_class.dta"}\NormalTok{)}
+\NormalTok{d <-}\StringTok{ }\KeywordTok{data.table}\NormalTok{(d)}
+\KeywordTok{head}\NormalTok{(d)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    street havecell avg_bins_treat base_avg_bins_treat bin sms bin_s bin_g sms_p
+## 1:      7        1      1.0416666               0.750   1   1     1     0     0
+## 2:      7        1      0.0000000               0.000   0   1     0     0     1
+## 3:      7        1      0.7500000               0.500   0   0     0     0     0
+## 4:      7        1      0.5416667               0.500   0   0     0     0     0
+## 5:      6        1      0.9583333               0.375   1   0     0     1     0
+## 6:      8        0      0.2083333               0.000   1   0     0     1     0
+##    sms_g
+## 1:     1
+## 2:     0
+## 3:     0
+## 4:     0
+## 5:     0
+## 6:     0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{## Do some quick exploratory data analysis with this data. }
+\CommentTok{## There are some values in this data that seem a bit strange. }
+
+\CommentTok{## Determine what these are. }
+\CommentTok{## Don't make an assessment about keeping, changing, or }
+\CommentTok{## dropping just yet, but at any point that your analysis touches }
+\CommentTok{## these variables, you'll have to determine what is appropriate }
+\CommentTok{## given the analysis you are conducting. }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  For simplicity, let's start by measuring the effect of providing a
+  recycling bin, ignoring the SMS message treatment (and ignoring
+  whether there was a sticker on the bin or not). Run a regression of Y
+  on only the bin treatment dummy, so you estimate a simple difference
+  in means. Provide a 95\% confidence interval for the treatment effect,
+  using \textbf{of course} robust standard errors (use these
+  throughout).
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(lmtest)}
+\KeywordTok{library}\NormalTok{(sandwich)}
+\KeywordTok{library}\NormalTok{(stargazer)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Please cite as:
+\end{verbatim}
+
+\begin{verbatim}
+##  Hlavac, Marek (2018). stargazer: Well-Formatted Regression and Summary Statistics Tables.
+\end{verbatim}
+
+\begin{verbatim}
+##  R package version 5.2.2. https://CRAN.R-project.org/package=stargazer
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{robust_se <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(mod)\{}
+\NormalTok{  cov1 <-}\StringTok{ }\KeywordTok{vcovHC}\NormalTok{(mod, }\DataTypeTok{type =} \StringTok{"HC1"}\NormalTok{)}
+\KeywordTok{return}\NormalTok{(}\KeywordTok{sqrt}\NormalTok{(}\KeywordTok{diag}\NormalTok{(cov1)))}
+\NormalTok{\}}
+\NormalTok{mod_}\DecValTok{1}\NormalTok{ <-}\StringTok{ }\NormalTok{d[, }\KeywordTok{lm}\NormalTok{(avg_bins_treat }\OperatorTok{~}\StringTok{ }\NormalTok{bin)]}
+\NormalTok{mod_}\DecValTok{1}\OperatorTok{$}\NormalTok{vcovHC_ <-}\StringTok{ }\KeywordTok{vcovHC}\NormalTok{(mod_}\DecValTok{1}\NormalTok{)}
+\KeywordTok{sqrt}\NormalTok{(}\KeywordTok{diag}\NormalTok{(}\KeywordTok{vcovHC}\NormalTok{(mod_}\DecValTok{1}\NormalTok{, }\DataTypeTok{type =} \StringTok{"HC1"}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## (Intercept)         bin 
+##  0.01147343  0.02080523
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{confidence_interval =}\StringTok{ }\KeywordTok{coefci}\NormalTok{(mod_}\DecValTok{1}\NormalTok{, }\DataTypeTok{level =} \FloatTok{0.95}\NormalTok{, }\DataTypeTok{vcov. =}\NormalTok{ vcovHC)[}\DecValTok{2}\NormalTok{,] }
+\NormalTok{confidence_interval}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      2.5 %     97.5 % 
+## 0.09454001 0.17621998
+\end{verbatim}
+
+\textbf{Answer: 95\% confidence interval is between 0.09454001 and
+0.17621998}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Now add the pre-treatment value of Y as a covariate. Provide a 95\%
+  confidence interval for the treatment effect. Explain how and why this
+  confidence interval differs from the previous one.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod_}\DecValTok{2}\NormalTok{ <-}\StringTok{ }\NormalTok{d[}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(street),}\KeywordTok{lm}\NormalTok{(avg_bins_treat }\OperatorTok{~}\StringTok{ }\NormalTok{bin }\OperatorTok{+}\StringTok{ }\NormalTok{base_avg_bins_treat)]}
+\NormalTok{confidence_interval =}\StringTok{ }\KeywordTok{coefci}\NormalTok{(mod_}\DecValTok{2}\NormalTok{, }\DataTypeTok{level =} \FloatTok{0.95}\NormalTok{, }\DataTypeTok{vcov. =}\NormalTok{ vcovHC)[}\DecValTok{2}\NormalTok{,] }
+\NormalTok{confidence_interval}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      2.5 %     97.5 % 
+## 0.09056388 0.15792079
+\end{verbatim}
+
+\textbf{Answer: Adding the base\_avg\_bins\_treat makes the confidence
+interval more narrow. This is because base\_avg\_bins\_treat explains a
+some of the variance.} 3. Now add the street fixed effects. (You'll need
+to use the R command factor().) Provide a 95\% confidence interval for
+the treatment effect.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod_}\DecValTok{3}\NormalTok{ <-}\StringTok{ }\NormalTok{d[}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(street), }\KeywordTok{lm}\NormalTok{(avg_bins_treat }\OperatorTok{~}\StringTok{ }\NormalTok{bin }\OperatorTok{+}\NormalTok{base_avg_bins_treat }\OperatorTok{+}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(street))]}
+\NormalTok{confidence_interval =}\StringTok{ }\KeywordTok{coefci}\NormalTok{(mod_}\DecValTok{3}\NormalTok{, }\DataTypeTok{level =} \FloatTok{0.95}\NormalTok{, }\DataTypeTok{vcov. =}\NormalTok{ vcovHC)[}\DecValTok{2}\NormalTok{,] }
+\NormalTok{confidence_interval}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      2.5 %     97.5 % 
+## 0.07684258 0.15093098
+\end{verbatim}
+
+\textbf{Answer: the confidence interval is between 0.07684258 and
+0.15093098}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Recall that the authors described their experiment as ``stratified at
+  the street level,'' which is a synonym for blocking by street. Does
+  including these block fixed effects change the standard errors of the
+  estimates \emph{very much}? Conduct the appropriate test for the
+  inclusion of these block fixed effects, and interpret them in the
+  context of the other variables in the regression.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod_}\DecValTok{4}\NormalTok{ <-}\StringTok{ }\NormalTok{d[}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(street), }\KeywordTok{lm}\NormalTok{(avg_bins_treat }\OperatorTok{~}\StringTok{ }\NormalTok{bin }\OperatorTok{+}\StringTok{ }\NormalTok{base_avg_bins_treat }\OperatorTok{+}\StringTok{ }\KeywordTok{factor}\NormalTok{(street))]}
+\KeywordTok{coeftest}\NormalTok{(mod_}\DecValTok{4}\NormalTok{, }\DataTypeTok{vcov =} \KeywordTok{vcovHC}\NormalTok{(mod_}\DecValTok{4}\NormalTok{, }\DataTypeTok{type =} \StringTok{"HC0"}\NormalTok{))[}\DecValTok{2}\NormalTok{, ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     Estimate   Std. Error      t value     Pr(>|t|) 
+## 1.138868e-01 1.659533e-02 6.862579e+00 9.637996e-12
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{coefci}\NormalTok{(mod_}\DecValTok{4}\NormalTok{, }\DataTypeTok{level =} \FloatTok{0.95}\NormalTok{, }\DataTypeTok{vcov. =}\NormalTok{ vcovHC, }\StringTok{"bin"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          2.5 %   97.5 %
+## bin 0.07684258 0.150931
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{test_fixed_effects <-}\StringTok{ }\KeywordTok{anova}\NormalTok{(mod_}\DecValTok{4}\NormalTok{, mod_}\DecValTok{2}\NormalTok{, }\DataTypeTok{test =} \StringTok{"F"}\NormalTok{)}
+\NormalTok{test_fixed_effects}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Model 1: avg_bins_treat ~ bin + base_avg_bins_treat + factor(street)
+## Model 2: avg_bins_treat ~ bin + base_avg_bins_treat
+##   Res.Df    RSS   Df Sum of Sq      F    Pr(>F)    
+## 1   1600 167.50                                    
+## 2   1779 196.78 -179   -29.278 1.5624 9.514e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\textbf{Answer: Including these block fixed effects almost does not
+change the standard errors. Because the variable base\_avg\_bins\_treat
+is already included, the street level variations explain very little
+variance.} \textgreater{}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Perhaps having a cell phone helps explain the level of recycling
+  behavior. Instead of ``has cell phone,'' we find it easier to
+  interpret the coefficient if we define the variable " no cell phone."
+  Give the R command to define this new variable, which equals one minus
+  the ``has cell phone'' variable in the authors' data set. Use ``no
+  cell phone'' instead of ``has cell phone'' in subsequent regressions
+  with this dataset.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{d[, nocell }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{havecell]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  Now add ``no cell phone'' as a covariate to the previous regression.
+  Provide a 95\% confidence interval for the treatment effect. Explain
+  why this confidence interval does not differ much from the previous
+  one.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod_}\DecValTok{5}\NormalTok{ <-}\StringTok{ }\NormalTok{mod_}\DecValTok{5}\NormalTok{ <-}\StringTok{ }\NormalTok{d[ , }\KeywordTok{lm}\NormalTok{(avg_bins_treat }\OperatorTok{~}\StringTok{ }\NormalTok{bin }\OperatorTok{+}\StringTok{ }\NormalTok{base_avg_bins_treat }\OperatorTok{+}
+\NormalTok{nocell }\OperatorTok{+}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(street))]}
+\NormalTok{confidence_interval =}\StringTok{ }\KeywordTok{coefci}\NormalTok{(mod_}\DecValTok{5}\NormalTok{, }\DataTypeTok{level =} \FloatTok{0.95}\NormalTok{, }\DataTypeTok{vcov. =}\NormalTok{ vcovHC)[}\DecValTok{2}\NormalTok{,] }
+\NormalTok{confidence_interval}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      2.5 %     97.5 % 
+## 0.07801276 0.15218873
+\end{verbatim}
+
+\textbf{Answer: The CI is between 0.07801276 and 0.15218873. Adding the
+no cell phone variable does not narrow the CI much since
+base\_avg\_bins\_treat already explains a large portion of the
+variance.} 7. Now let's add in the SMS treatment. Re-run the previous
+regression with ``any SMS'' included. You should get the same results as
+in Table 4A. Provide a 95\% confidence interval for the treatment effect
+of the recycling bin. Explain why this confidence interval does not
+differ much from the previous one.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod_}\DecValTok{6}\NormalTok{ <-}\StringTok{ }\NormalTok{d[ , }\KeywordTok{lm}\NormalTok{(avg_bins_treat }\OperatorTok{~}\StringTok{ }\NormalTok{bin }\OperatorTok{+}\StringTok{ }\NormalTok{sms }\OperatorTok{+}\StringTok{ }\NormalTok{nocell }\OperatorTok{+}
+\NormalTok{base_avg_bins_treat }\OperatorTok{+}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(street))]}
+\NormalTok{confidence_interval =}\StringTok{ }\KeywordTok{coefci}\NormalTok{(mod_}\DecValTok{6}\NormalTok{, }\DataTypeTok{level =} \FloatTok{0.95}\NormalTok{, }\DataTypeTok{vcov. =}\NormalTok{ vcovHC)[}\DecValTok{2}\NormalTok{,] }
+\NormalTok{confidence_interval}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     2.5 %    97.5 % 
+## 0.0779404 0.1521669
+\end{verbatim}
+
+\textbf{Answer: The CI is between 0.07801276 and 0.15218873. Adding the
+SMS variable does not narrow the CI much since base\_avg\_bins\_treat
+already explains a large portion of the variance.} 8. Now reproduce the
+results of column 2 in Table 4B, estimating separate treatment effects
+for the two types of SMS treatments and the two types of recycling-bin
+treatments. Provide a 95\% confidence interval for the effect of the
+unadorned recycling bin. Explain how your answer differs from that in
+part (g), and explain why you think it differs.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod_}\DecValTok{7}\NormalTok{ <-}\StringTok{ }\NormalTok{d[ , }\KeywordTok{lm}\NormalTok{(avg_bins_treat }\OperatorTok{~}\StringTok{ }\NormalTok{bin_g }\OperatorTok{+}\StringTok{ }\NormalTok{bin_s }\OperatorTok{+}\StringTok{ }\NormalTok{sms_p }\OperatorTok{+}\StringTok{ }\NormalTok{sms_g }\OperatorTok{+}\StringTok{ }\NormalTok{nocell }\OperatorTok{+}\StringTok{ }\NormalTok{base_avg_bins_treat }\OperatorTok{+}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(street))]}
+\KeywordTok{coefci}\NormalTok{(mod_}\DecValTok{7}\NormalTok{, }\DataTypeTok{vcov. =}\NormalTok{ vcovHC)[}\DecValTok{1}\OperatorTok{:}\DecValTok{8}\NormalTok{,]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                           2.5 %       97.5 %
+## (Intercept)          0.30954042  0.460346210
+## bin_g                0.05403562  0.152344809
+## bin_s                0.08017682  0.175448965
+## sms_p               -0.06329329  0.047210982
+## sms_g               -0.03463314  0.074047372
+## nocell              -0.09157289 -0.001194029
+## base_avg_bins_treat  0.31421246  0.433491898
+## as.factor(street)2  -0.21517020  0.013812709
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{stargazer}\NormalTok{(mod_}\DecValTok{7}\NormalTok{, }\DataTypeTok{type =} \StringTok{'text'}\NormalTok{, }\DataTypeTok{se =} \KeywordTok{list}\NormalTok{( }\KeywordTok{robust_se}\NormalTok{(mod_}\DecValTok{7}\NormalTok{)), }\DataTypeTok{add.lines =} \KeywordTok{list}\NormalTok{( }\KeywordTok{c}\NormalTok{(}\StringTok{'SE Flavor'}\NormalTok{,}\StringTok{'Robust'}\NormalTok{), }\KeywordTok{c}\NormalTok{(}\StringTok{'Street fixed effects'}\NormalTok{,}\StringTok{'Yes'}\NormalTok{) ), }\DataTypeTok{omit =} \StringTok{'street'}\NormalTok{, }\DataTypeTok{model.numbers=}\OtherTok{FALSE}\NormalTok{, }\DataTypeTok{column.labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"mod_7"}\NormalTok{), }\DataTypeTok{header=}\NormalTok{F)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## ================================================
+##                          Dependent variable:    
+##                      ---------------------------
+##                            avg_bins_treat       
+##                                  mod            
+## ------------------------------------------------
+## bin_g                         0.103***          
+##                                (0.023)          
+##                                                 
+## bin_s                         0.128***          
+##                                (0.022)          
+##                                                 
+## sms_p                          -0.008           
+##                                (0.026)          
+##                                                 
+## sms_g                           0.020           
+##                                (0.026)          
+##                                                 
+## nocell                        -0.046**          
+##                                (0.021)          
+##                                                 
+## base_avg_bins_treat           0.374***          
+##                                (0.027)          
+##                                                 
+## Constant                      0.385***          
+##                                (0.038)          
+##                                                 
+## ------------------------------------------------
+## SE Flavor                      Robust           
+## Street fixed effects             Yes            
+## Observations                    1,781           
+## R2                              0.440           
+## Adjusted R2                     0.375           
+## Residual Std. Error       0.323 (df = 1595)     
+## F Statistic           6.769*** (df = 185; 1595) 
+## ================================================
+## Note:                *p<0.1; **p<0.05; ***p<0.01
+\end{verbatim}
+
+\textbf{Answer: This model includes more specific covariates such as
+bins with sticker and bins without sticker. This slightly shifted the
+estimate for bins. I think the results are different since the effect of
+bin and sms are considered as two sub-categories so their impacts are
+different.}
+
+\hypertarget{a-final-practice-problem}{%
+\section{4. A Final Practice Problem}\label{a-final-practice-problem}}
+
+Now for a fictional scenario. An emergency two-week randomized
+controlled trial of the experimental drug ZMapp is conducted to treat
+Ebola. (The control represents the usual standard of care for patients
+identified with Ebola, while the treatment is the usual standard of care
+plus the drug.)
+
+Here are the (fake) data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{d <-}\StringTok{ }\KeywordTok{fread}\NormalTok{(}\StringTok{"./data/ebola_rct2.csv"}\NormalTok{)}
+\KeywordTok{head}\NormalTok{(d)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    temperature_day0 dehydrated_day0 treat_zmapp temperature_day14
+## 1:         99.53168               1           0          98.62634
+## 2:         97.37372               0           0          98.03251
+## 3:         97.00747               0           1          97.93340
+## 4:         99.74761               1           0          98.40457
+## 5:         99.57559               1           1          99.31678
+## 6:         98.28889               1           1          99.82623
+##    dehydrated_day14 male
+## 1:                1    0
+## 2:                1    0
+## 3:                0    1
+## 4:                1    0
+## 5:                1    0
+## 6:                1    1
+\end{verbatim}
+
+You are asked to analyze it. Patients' temperature and whether they are
+dehydrated is recorded on day 0 of the experiment, then ZMapp is
+administered to patients in the treatment group on day 1. Dehydration
+and temperature is again recorded on day 14.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Without using any covariates, answer this question with regression:
+  What is the estimated effect of ZMapp (with standard error in
+  parentheses) on whether someone was dehydrated on day 14? What is the
+  p-value associated with this estimate?
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{zmapp_}\DecValTok{1}\NormalTok{ <-}\StringTok{ }\NormalTok{d[ , }\KeywordTok{lm}\NormalTok{(dehydrated_day14 }\OperatorTok{~}\StringTok{ }\NormalTok{treat_zmapp)]}
+\KeywordTok{coeftest}\NormalTok{(zmapp_}\DecValTok{1}\NormalTok{, }\DataTypeTok{vcov. =}\NormalTok{ zmapp_}\DecValTok{1}\OperatorTok{$}\NormalTok{vcovHC_)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## t test of coefficients:
+## 
+##              Estimate Std. Error t value  Pr(>|t|)    
+## (Intercept)  0.847458   0.054831 15.4558 < 2.2e-16 ***
+## treat_zmapp -0.237702   0.085632 -2.7759  0.006595 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\textbf{Answer: The estimated impact of the zmapp treatment is -0.23770
+(0.085632) with a p-value of 0.006595. The results are statistically
+significant at the 0.05 level.}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Add covariates for dehydration on day 0 and patient temperature on day
+  0 to the regression from part (a) and report the ATE (with standard
+  error). Also report the p-value.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{zmapp_}\DecValTok{2}\NormalTok{ <-}\StringTok{ }\NormalTok{d[ , }\KeywordTok{lm}\NormalTok{(dehydrated_day14 }\OperatorTok{~}\StringTok{ }\NormalTok{treat_zmapp }\OperatorTok{+}\StringTok{ }\NormalTok{dehydrated_day0 }\OperatorTok{+}\StringTok{ }\NormalTok{temperature_day0)]}
+\NormalTok{zmapp_}\DecValTok{2}\OperatorTok{$}\NormalTok{vcovHC_ <-}\StringTok{ }\KeywordTok{vcovHC}\NormalTok{(zmapp_}\DecValTok{2}\NormalTok{)}
+\KeywordTok{coeftest}\NormalTok{(zmapp_}\DecValTok{2}\NormalTok{, }\DataTypeTok{vcov. =}\NormalTok{ zmapp_}\DecValTok{2}\OperatorTok{$}\NormalTok{vcovHC_)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## t test of coefficients:
+## 
+##                    Estimate Std. Error t value Pr(>|t|)   
+## (Intercept)      -19.469655   7.607812 -2.5592 0.012054 * 
+## treat_zmapp       -0.165537   0.081976 -2.0193 0.046242 * 
+## dehydrated_day0    0.064557   0.178032  0.3626 0.717689   
+## temperature_day0   0.205548   0.078060  2.6332 0.009859 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\textbf{Answer: The ATE is -0.165537 (0.081976) with P-value 0.046242}
+3. Do you prefer the estimate of the ATE reported in part (a) or part
+(b)? Why? Report the results of the F-test that you used to form this
+opinion.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{zmapp_test_object <-}\StringTok{ }\KeywordTok{anova}\NormalTok{(zmapp_}\DecValTok{1}\NormalTok{, zmapp_}\DecValTok{2}\NormalTok{, }\DataTypeTok{test=}\StringTok{'F'}\NormalTok{)}
+\NormalTok{zmapp_test_object}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Model 1: dehydrated_day14 ~ treat_zmapp
+## Model 2: dehydrated_day14 ~ treat_zmapp + dehydrated_day0 + temperature_day0
+##   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
+## 1     98 17.383                                  
+## 2     96 12.918  2    4.4653 16.592 6.472e-07 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{quote}
+\textbf{Answer: The p-value from the f-test as 6.472 × 10−7, so the
+means between both models are significantly different. I prefer model
+reported in part (b) because having those covariates gives model 2 much
+more explanatory power.}
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  The regression from part (2) suggests that temperature is highly
+  predictive of dehydration. Add, temperature on day 14 as a covariate
+  and report the ATE, the standard error, and the p-value.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{zmapp_}\DecValTok{3}\NormalTok{ <-}\StringTok{ }\NormalTok{d[ , }\KeywordTok{lm}\NormalTok{(dehydrated_day14 }\OperatorTok{~}\StringTok{ }\NormalTok{treat_zmapp }\OperatorTok{+}
+\NormalTok{dehydrated_day0 }\OperatorTok{+}\StringTok{ }\NormalTok{temperature_day0 }\OperatorTok{+}\StringTok{ }\NormalTok{temperature_day14)]}
+\NormalTok{zmapp_}\DecValTok{3}\OperatorTok{$}\NormalTok{vcovHC_ <-}\StringTok{ }\KeywordTok{vcovHC}\NormalTok{(zmapp_}\DecValTok{3}\NormalTok{)}
+\KeywordTok{coeftest}\NormalTok{(zmapp_}\DecValTok{3}\NormalTok{, }\DataTypeTok{vcov. =}\NormalTok{ zmapp_}\DecValTok{3}\OperatorTok{$}\NormalTok{vcovHC_)[}\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{, ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                       Estimate Std. Error    t value    Pr(>|t|)
+## (Intercept)       -22.59158542 7.74603598 -2.9165350 0.004416256
+## treat_zmapp        -0.12010063 0.08579823 -1.3998031 0.164829438
+## dehydrated_day0     0.04603820 0.17317653  0.2658455 0.790934299
+## temperature_day0    0.17664160 0.07702438  2.2933207 0.024034399
+## temperature_day14   0.06014826 0.02583051  2.3285745 0.022002175
+\end{verbatim}
+
+\textbf{Answer: The ATE is -0.12010063 (0.07767979) with P-value
+0.125405588} 5. Do you prefer the estimate of the ATE reported in part
+(b) or part (d)? What is this preference based on?
+
+\begin{quote}
+\textbf{Answer: I think part b is better because adding
+temperature\_day14 is likely a bad control, and therefore it should not
+be included as explanatory variable in the model.}
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  Now let's switch from the outcome of dehydration to the outcome of
+  temperature, and use the same regression covariates as in the chunk
+  titled \texttt{add\ pre-treatment\ measures}. Test the hypothesis that
+  ZMapp is especially likely to reduce mens' temperatures, as compared
+  to womens', and describe how you did so. What do the results suggest?
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{zmapp_}\DecValTok{4}\NormalTok{ <-}\StringTok{ }\NormalTok{d[ , }\KeywordTok{lm}\NormalTok{(temperature_day14 }\OperatorTok{~}\StringTok{ }\NormalTok{treat_zmapp }\OperatorTok{+}\StringTok{ }\NormalTok{temperature_day0 }\OperatorTok{+}\StringTok{ }\NormalTok{dehydrated_day0 }\OperatorTok{+}\NormalTok{male }\OperatorTok{+}\StringTok{ }\NormalTok{(male }\OperatorTok{*}\StringTok{ }\NormalTok{treat_zmapp) )]}
+\NormalTok{zmapp_}\DecValTok{4}\OperatorTok{$}\NormalTok{vcovHC_ <-}\StringTok{ }\KeywordTok{vcovHC}\NormalTok{(zmapp_}\DecValTok{4}\NormalTok{)}
+\KeywordTok{stargazer}\NormalTok{(zmapp_}\DecValTok{4}\NormalTok{, }\DataTypeTok{type =} \StringTok{'text'}\NormalTok{, }\DataTypeTok{se =} \KeywordTok{list}\NormalTok{(zmapp_}\DecValTok{4}\OperatorTok{$}\NormalTok{robust.se), }\DataTypeTok{add.lines =} \KeywordTok{list}\NormalTok{( }\KeywordTok{c}\NormalTok{(}\StringTok{'SE Flavor'}\NormalTok{,}\StringTok{'Robust'}\NormalTok{)),}
+\DataTypeTok{column.labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"zmapp_4"}\NormalTok{),}\DataTypeTok{model.numbers=}\OtherTok{FALSE}\NormalTok{,}\DataTypeTok{header=}\NormalTok{F)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## ===============================================
+##                         Dependent variable:    
+##                     ---------------------------
+##                          temperature_day14     
+##                                zmapp           
+## -----------------------------------------------
+## treat_zmapp                   -0.231*          
+##                               (0.119)          
+##                                                
+## temperature_day0             0.505***          
+##                               (0.095)          
+##                                                
+## dehydrated_day0                0.041           
+##                               (0.182)          
+##                                                
+## male                         3.085***          
+##                               (0.126)          
+##                                                
+## treat_zmapp:male             -2.077***         
+##                               (0.192)          
+##                                                
+## Constant                     48.713***         
+##                               (9.266)          
+##                                                
+## -----------------------------------------------
+## SE Flavor                     Robust           
+## Observations                    100            
+## R2                             0.906           
+## Adjusted R2                    0.901           
+## Residual Std. Error       0.452 (df = 94)      
+## F Statistic           180.953*** (df = 5; 94)  
+## ===============================================
+## Note:               *p<0.1; **p<0.05; ***p<0.01
+\end{verbatim}
+
+\textbf{Answer: The results suggest that treat\_zmapp has a negative
+impact on temperature\_day14. The coefficient is -0.231 (0.119). The
+stargazer output shows that the ATE for treatment for females is -0.231,
+and the ATE for males is -2.077 (p-value \textless{} 0.01). So there is
+a -2 degree reduction in day 14 temperature.}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{6}
+\tightlist
+\item
+  Which group -- those that are coded as \texttt{male\ ==\ 0} or
+  \texttt{male\ ==\ 1} have better health outcomes in control? What
+  about in treatment? How does this help to contextualize whatever
+  heterogeneous treatment effect you might have estimated?
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{d[, }\KeywordTok{mean}\NormalTok{(temperature_day14), by=.(male, treat_zmapp)]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    male treat_zmapp        V1
+## 1:    0           0  98.48654
+## 2:    1           1  99.10071
+## 3:    0           1  98.16308
+## 4:    1           0 101.69167
+\end{verbatim}
+
+\begin{quote}
+\textbf{Answer: In the control group, females have better health
+outcomes. In the treatment group, males also have worse health outcomes.
+Although the health outcomes for males are worse, the treatment effect
+is actually larger for them. This confirms with our findings above where
+we see that the male has a higher baseline average temperature in
+general. This gives us an idea of how the treatment works in males vs
+females. }
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{7}
+\tightlist
+\item
+  Suppose that you had not run the regression in part (7). Instead, you
+  speak with a colleague to learn about heterogeneous treatment effects.
+  This colleague has access to a non-anonymized version of the same
+  dataset and reports that they looked at heterogeneous effects of the
+  ZMapp treatment by each of 80 different covariates to examine whether
+  each predicted the effectiveness of ZMapp on each of 20 different
+  indicators of health. Across these regressions your colleague ran, the
+  treatment's interaction with gender on the outcome of temperature is
+  the only heterogeneous treatment effect that he found to be
+  statistically significant. They reason that this shows the importance
+  of gender for understanding the effectiveness of the drug, because
+  nothing else seemed to indicate why it worked. Bolstering your
+  colleague's confidence, after looking at the data, they also returned
+  to his medical textbooks and built a theory about why ZMapp interacts
+  with processes only present in men to cure. Another doctor, unfamiliar
+  with the data, hears your colleague's theory and finds it plausible.
+  How likely do you think it is ZMapp works especially well for curing
+  Ebola in men, and why? (This question is conceptual can be answered
+  without performing any computation.)
+\end{enumerate}
+
+\begin{quote}
+\textbf{Answer: Performing repeated tests as above sounds like fishing
+expedition, which could substantially increases the chances of having a
+falsely significant result. It is likely that one covariate will be
+significant at the 0.05 level just by chance. }
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{8}
+\tightlist
+\item
+  Now, imagine that your colleague's fishing expedition did not happen,
+  but that you had tested this heterogeneous treatment effect, and only
+  this heterogeneous treatment effect, of your own accord. Would you be
+  more or less inclined to believe that the heterogeneous treatment
+  effect really exists? Why?
+\end{enumerate}
+
+\begin{quote}
+\textbf{Answer: I would be more inclined to believe it. With independent
+test, the result is more reliable, and it is more likely that the
+results in fact are significant. }
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{9}
+\tightlist
+\item
+  Now, imagine that your colleague's fishing expedition \textbf{did}
+  happen, but that you on your own tested this and only this HTE,
+  discover a positive result and conclude there is an effect. How does
+  your colleague's behavior change the interpretation of your test? Does
+  this seem fair or reasonable?
+\end{enumerate}
+
+\begin{quote}
+\textbf{Answer: In this case, I would not trust the results. Given that
+the data is the same, the test could still be significant even if it is
+a false positive. I would suggest to test this by collecting data in a
+new trial.}
+\end{quote}
+
+\end{document}

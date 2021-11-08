@@ -1,0 +1,5 @@
+# Think about Treatment Effects 
+
+Throughout this course we have focused on the average treatment effect. *Why* we are concerned about the average treatment effect. What is the relationship between an ATE, and some individuals' potential outcomes? Make the strongest case you can for why this is a *good* measure.
+
+**Answer: The reason we study average treatment effect is because this tells us how much a certain treatmeat will impacto a subject, on average, and we can apply that insights to the general public with proper randomizzgion. An individual can have multiple potential outcomes but the average treatment effect can tell us the difference between these for any given subject.**

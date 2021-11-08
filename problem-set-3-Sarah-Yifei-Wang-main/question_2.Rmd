@@ -1,0 +1,27 @@
+# 2. Multifactor Experiments 
+
+Staying with the same experiment, now think about multifactor experiments. 
+
+1. What is the full experimental design for this experiment?  Tell us the dimensions, such as 2x2x3. The full results appear in Panel 4B. We'll note that the dimensions of an experiment are defined in terms of the *treatments that the experiment assigns*, not in terms of other features about the data. 
+
+> **Answer: This is a 3x3 dimension experiment with the following axes: 3 bin attributes [bin with, bin without sticker, or no bin] and 3 attributes for SMS [personalized sms, generic sms, or no sms]. The havecell is not included in the design dimensions because it is a pre-treatment covariate which is not included in the administration of treatment to subjects, or not an intervention**
+
+2. In the results of Table 4B, describe the baseline category. That is, in English, how would you describe the attributes of the group of people for whom all dummy variables are equal to zero?
+
+> **Answer: They are those people who do not have a cell phone, who did not receive a bin, nor an SMS message**
+
+3. In column (1) of Table 4B, interpret the magnitude of the coefficient on "bin without sticker."  What does it mean?
+
+> **Answer: households that received a bin but with no sticker were 3.5 percentage points more likely to turn in recyclables**
+
+4. In column (1) of Table 4B, which seems to have a stronger treatment effect, the recycling bin with message sticker, or the recycling bin without sticker?  How large is the magnitude of the estimated difference?
+
+> **Answer: The recycling bin with message sticker have a stronger effect. The magnitude is 2 percentage point. The coefficient for the recycling bin with a sticker is 0.055 with a standard error of 0.015 and the coefficient for a recycling bin without a sticker is 0.035 with a standard error of 0.015.**
+
+5. Is this difference you just described statistically significant?  Explain which piece of information in the table allows you to answer this question.
+
+> **Answer: It is not statistically significant. The p-value for F-test is 0.31. So the differences in treatment effects are not significant at the 5% significance level.**
+
+6. Notice that Table 4C is described as results from "fully saturated" models.  What does this mean?  Looking at the list of variables in the table, explain in what sense the model is "saturated."
+
+>  **Answer: A fully saturated model is a model that has as many parameters as data points. In this case, the model creates a dummy variable for every combination of variables, so it is saturated**

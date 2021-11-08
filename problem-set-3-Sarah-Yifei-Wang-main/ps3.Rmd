@@ -1,0 +1,30 @@
+---
+title:  "Experiments and Causality: Problem Set 3"
+author: "Alex, Micah and Scott"
+date:   "12/7/2020"
+output: html_document
+---
+
+```{r load packages, warning=FALSE, message=FALSE}
+library(data.table)
+
+library(sandwich)
+library(lmtest)
+
+library(ggplot2)
+library(patchwork)
+
+library(foreign)
+```
+
+```{r, child='./question_1.Rmd'}
+```
+
+```{r, child='./question_2.Rmd'}
+```
+
+```{r, child='./question_3.Rmd'}
+```
+
+```{r, child='./question_4.Rmd'}
+```

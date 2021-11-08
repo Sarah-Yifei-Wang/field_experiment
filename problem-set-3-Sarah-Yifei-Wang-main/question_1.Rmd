@@ -1,0 +1,34 @@
+# 1. Peruvian Recycling 
+
+Look at [this article](./readings/recycling_peru.pdf) about encouraging recycling in Peru.  The paper contains two experiments, a "participation study" and a "participation intensity study."  In this problem, we will focus on the latter study, whose results are contained in Table 4 in this problem.  You will need to read the relevant section of the paper (starting on page 20 of the manuscript) in order to understand the experimental design and variables.  (*Note that "indicator variable" is a synonym for "dummy variable," in case you haven't seen this language before.*)
+
+1. In Column 3 of Table 4A, what is the estimated ATE of providing a recycling bin on the average weight of recyclables turned in per household per week, during the six-week treatment period?  Provide a 95% confidence interval.
+
+**Answer: The estimated ATE is 0.187. SE is 0.032. The 95% confidence interval is 0.187 + 1.96 * 0.032= 0.250 and 0.187 - 1.96 * 0.032= 0.124**
+
+
+2. In Column 3 of Table 4A, what is the estimated ATE of sending a text message reminder on the average weight of recyclables turned in per household per week?  Provide a 95% confidence interval.
+
+**Answer: The estimated ATE is -0.024. The 95% confidence interval is (-0.102, 0.054)**
+
+3. Which outcome measures in Table 4A show statistically significant effects (at the 5% level) of providing a recycling bin?
+
+**Answer: Percentage of visits turned in bag, Avg. no. of bins turned in per week, Avg. weight (in kg) of recyclables turned in per week, Avg. market value of recyclables given per week**
+
+4. Which outcome measures in Table 4A show statistically significant effects (at the 5% level) of sending text messages?
+**Answer: None of them shows statistically significant effects (at the 5% level) of sending text messages**
+
+5. Suppose that, during the two weeks before treatment, household A turns in 2kg per week more recyclables than household B does, and suppose that both households are otherwise identical (including being in the same treatment group).  From the model, how much more recycling do we predict household A to have than household B, per week, during the six weeks of treatment?   Provide only a point estimate, as the confidence interval would be a bit complicated.  This question is designed to test your understanding of slope coefficients in regression.
+
+**Answer: 0.281*2 = 0.562, so we expect household A to have 0.562 kg more than household B**
+
+6. Suppose that the variable "percentage of visits turned in bag, baseline" had been left out of the regression reported in Column 1.  What would you expect to happen to the results on providing a recycling bin?  Would you expect an increase or decrease in the estimated ATE?  Would you expect an increase or decrease in the standard error?  Explain our reasoning.
+
+**Answer: I think the estimated ATE will remain unchanged and the standard error will increase. Since providing a recycling bin is randomly assigned, it is independent of everything else. Therefore, we dont have to worry about omitted variables. However, we do expect the standard error to rise. With one variable left out, there is more variability (uncertainty) to explain by the treatment and we expect to see the standard error of our estimate to increase.**
+7. In column 1 of Table 4A, would you say the variable "has cell phone" is a bad control?  Explain your reasoning.
+
+**Answer: I don't think it is a bad control. Because "has cell phone" or not is not an outcome affected by the treatment. However, it does represent some design flaws because having cell phone may indicate the family financial ability, which may directly or indirectly indicate whether the family is able to afford recyclable goods**
+
+8. If we were to remove the "has cell phone" variable from the regression, what would you expect to happen to the coefficient on "Any SMS message"?  Would it go up or down? Explain your reasoning.
+
+**Answer:  I think the coefficient would increase/go up because it would take some variance from the has cell phone variable. This is because "any SMS message" variable could pick up the information contained in the "has cell phone" variable.**
