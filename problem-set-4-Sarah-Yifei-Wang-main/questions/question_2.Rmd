@@ -1,0 +1,118 @@
+# 2. Fun with the placebo
+
+The table below summarizes the data from a political science experiment on voting behavior. Subjects were randomized into three groups: a baseline control group (not contacted by canvassers), a treatment group (canvassers attempted to deliver an encouragement to vote), and a placebo group (canvassers attempted to deliver a message unrelated to voting or politics).
+
+```{r, echo=FALSE}
+summary_table <- data.table(
+  'Assignment' = c('Baseline', 'Treatment', 'Treatment', 'Placebo', 'Placebo'), 
+  'Treated?'   = c('No', 'Yes', 'No', 'Yes', 'No'), 
+  'N'          = c(2463, 512, 1898, 476, 2108), 
+  'Turnout'    = c(.3008, .3890, .3160, .3002, .3145)
+)
+
+kable(summary_table)
+``` 
+
+## Evaluating the Placebo Group
+
+1. Construct a data set that would reproduce the table. (Too frequently we receive data that has been summarized up to a level that is unuseful for our analysis. Here, we're asking you to "un-summarize" the data to conduct the rest of the analysis for this question.)
+
+```{r construct placebo data}
+
+nrow <- sum(summary_table$N)
+d <- data.table(
+  id = 1:sum(summary_table$N)
+)
+d[1:2463, `:=` (assignment = 'Baseline', treated = 0, turnout = c(rep(0, 1723), rep(1, 740)))]
+d[2464: sum(2463, 512), `:=` (assignment = 'Treatment', treated = 1, turnout = c(rep(0, 313), rep(1, 199)))]
+d[2976: sum(2463, 512, 1898), `:=` (assignment = 'Treatment', treated = 0, turnout = c(rep(0, 1298), rep(1, 600)))]
+d[4873 : sum(2463, 512, 1898, 476), `:=` (assignment = 'Placebo', treated = 1, turnout = c(rep(0, 334), rep(1, 143)))]
+d[sum(2463, 512, 1898, 476, 1):.N, `:=` (assignment = 'Placebo', treated = 0, turnout = c(rep(0, 1445), rep(1, 663)))]
+# d[, .(N = .N, Turnout = mean(turnout)), by = list(assignment, treated)]
+
+```
+
+2. Estimate the proportion of compliers by using the data on the treatment group.
+
+```{r treatment group compliance rate}
+complier_assign <- d[assignment == 'Treatment' & treated == 1, .N]
+total_treatment <- d[assignment == 'Treatment', .N]
+compliance_rate_t <- complier_assign/total_treatment
+compliance_rate_t
+
+```
+
+3. Estimate the proportion of compliers by using the data on the placebo group.
+
+```{r placebo group compliance rate}
+compliance_rate_p <- d[assignment == 'Placebo' & treated == 1, .N]/d[assignment == 'Placebo', .N]
+compliance_rate_p
+
+```
+
+4. Are the proportions in parts (1) and (2) statistically significantly different from each other? Provide *a test* and n description about why you chose that particular test, and why you chose that particular set of data. 
+
+```{r proportions difference}
+proportions_difference_test <- prop.test(
+  x = c(d[assignment == 'Treatment' & treated == 1, .N], d[assignment == 'Placebo' & treated == 1, .N]),
+  n = c(d[assignment == 'Treatment', .N], d[assignment == 'Placebo', .N]))
+  
+proportions_difference_test
+
+```
+
+> **Answer: I choose a two proportions z test because we are comparing two observed samples and the sample is large enough to apply central limit theorem. The null hypothesis is compliers in treatment assignment is equal to the compliers in placebo assignment. With a p-value of `r proportions_difference_test$p.value`, they are statistically different and we reject the null hypothesis at 5% significance level.**
+
+5. What critical assumption does this comparison of the two groups' compliance rates test? Given what you learn from the test, how do you suggest moving forward with the analysis for this problem? 
+
+> **Answer: One of the critial assumptions is that the percentage of compliers in the treatment group is same as that in the placebo. However, from answers above, we can see that the compliance rate in treatment group and placebo group is statistically significant. I would suggest investigating the root cause which caused the non-compliance across groups moving forward**
+
+6. Estimate the CACE of receiving the placebo. Is the estimate consistent with the assumption that the placebo has no effect on turnout?
+
+```{r cace of placebo}
+
+itt <- (d[assignment == "Placebo" & turnout == 1, .N]/d[assignment == "Placebo", .N]) - (d[assignment == "Baseline" & turnout == 1, .N]/d[assignment == "Baseline", .N])
+itt_d <- (d[assignment == "Placebo" & treated == 1, .N]/d[assignment == "Placebo", .N])
+cace_estimate <- itt/itt_d
+
+
+cace_estimate <- ((d[assignment == "Placebo", mean(turnout)])-(d[assignment == "Baseline", mean(turnout)]))/(d[assignment == "Placebo" & treated == 1, .N]/d[assignment == "Placebo", .N])
+cace_estimate
+
+```
+
+> **Answer: The placebo has some impact on ATE so it is not consistent with the assumption. If there were no effect we’d espect the estimate to be closer to 0. **
+
+## Estimate the CACE Several Ways
+
+7. Using a difference in means (i.e. not a linear model), compute the ITT using the appropriate groups' data. Then, divide this ITT by the appropriate compliance rate to produce an estiamte the CACE.  
+
+```{r cace through means }
+
+itt <- ((d[assignment == "Treatment", mean(turnout)])-(d[assignment == "Baseline", mean(turnout)]))
+cace_means <- itt/(d[assignment == "Treatment", mean(treated)])
+cace_means
+
+```
+
+8. Use two separate linear models to estimate the CACE of receiving the treatment by first estimating the ITT and then dividing by $ITT_{D}$. Use the `coef()` extractor and in line code evaluation to write a descriptive statement about what you learn after your code. 
+
+```{r itt / d}
+itt_model <- d[assignment == 'Treatment'|assignment == 'Baseline', lm(turnout ~ assignment)]
+itt_d_model <- d[, lm(treated ~ assignment)]
+cace_model_estimate <- coef(itt_model)[2]/coef(itt_d_model)[3] #check why 3 not 2
+cace_model_estimate
+
+```
+**Answer: Estimating CACE using linear models gives the same results as estimating the CACE using the difference in means from above.And there is some causal effect of treatment on turnout.**
+9. When a design uses a placebo group, one additional way to estiamte the CACE is possible -- subset to include only compliers in the treatment and placebo groups, and then estimate a linear model. Produce that estimate here. 
+
+```{r cace subset} 
+cace_subset_model <- d[assignment != 'Baseline' & treated == 1, lm(turnout ~ assignment)]
+cace_subset_model
+
+```
+
+10. In large samples (i.e. "in expectation") when the design is carried out correctly, we have the expectation that the results from 7, 8, and 9 should be the same. Are they? If so, does this give you confidence that these methods are working well. If not, what explains why these estimators are producing different estimates? 
+
+> **Answer: The results for 7 and 8 are the same but they are different from 9. I think the result from 9 is different might because it is utilizing the placebo set instead of the baseline. The difference in the compliance rate between the placebo group and the treatment group is the source of the issue.**

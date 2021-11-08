@@ -1,0 +1,238 @@
+# 4. Another Turnout Question
+
+We're sorry; it is just that the outcome and treatment spaces are so clear! 
+
+This question allows you to scope the level of difficulty that you want to take on. 
+
+- If you keep the number of rows at 100,000 this is pretty straightforward, and you should be able to complete your work on the r.datahub. 
+- But, the real fun is when you toggle on the full dataset; in the full dataset there are about 4,000,000 rows that you have to deal with. This is too many to work on the r.datahub. But if you're writing using `data.table` and use a docker image or a local install either on your own laptop or a cloud provider, you should be able to complete this work. 
+
+Hill and Kousser (2015) report that it is possible to increase the probability that someone votes in the California *Primary Election* simply by sending them a letter in the mail. This is kind of surprising, because who even reads the mail anymore anyways? (Actually, if you talk with folks who work in the space, they'll say, "We know that everybody throws our mail away; we just hope they see it on the way to the garbage.")
+
+Can you replicate their findings? Let's walk through them.
+
+```{r}
+# number_of_rows <- 100000
+number_of_rows <- Inf
+
+# d <- data.table::fread(
+#   input = 'https://people.ischool.berkeley.edu/~d.alex.hughes/data/hill_kousser_analysisFile.csv', 
+#   nrows = number_of_rows)
+
+d<- readRDS(file = '/Users/mac/Desktop/W241/problem-set-4-Sarah-Yifei-Wang-main/q4_data.rds')
+setDT(d)
+```
+
+(As an aside, you'll note that this takes some time to download. One idea is to save a copy locally, rather than continuing to read from the internet. One problem with this idea is that you might be tempted to make changes to this canonical data; changes that wouldn't be reflected if you were to ever pull a new copy from the source tables. One method of dealing with this is proposed by [Cookiecutter data science](https://drivendata.github.io/cookiecutter-data-science/#links-to-related-projects-and-references).)
+
+Here's what is in that data. 
+
+- `age.bin` a bucketed, descriptive, version of the `age.in.14` variable 
+- `party.bin` a bucketed version of the `Party` variable 
+- `in.toss.up.dist` whether the voter lives in a district that often has close races 
+- `minority.dist` whether the voter lives in a majority minority district, i.e. a majority black, latino or other racial/ethnic minority district 
+- `Gender` voter file reported gender
+- `Dist1-8` congressional and data districts 
+- `reg.date.pre.08` whether the voter has been registered since before 2008 
+- `vote.xx.gen` whether the voter voted in the `xx` general election 
+- `vote.xx.gen.pri` whether the voter voted in the `xx` general primary election 
+- `vote.xx.pre.pri` whether the voter voted in the `xx` presidential primary election 
+- `block.num` a block indicator for blocked random assignment. 
+- `treatment.assign` either "Control", "Election Info", "Partisan Cue", or "Top-Two Info"
+- `yvar` the outcome variable: did the voter vote in the 2014 primary election 
+
+These variable names are horrible. Do two things: 
+
+- Rename the smallest set of variables that you think you might use to something more useful. (You can use `data.table::setnames` to do this.) 
+- For the variables that you think you might use; check that the data makes sense; 
+
+When you make these changes, take care to make these changes in a way that is reproducible. In doing so, ensure that nothing is positional indexed, since the orders of columns might change in the source data). 
+
+While you're at it, you might as well also modify your `.gitignore` to ignore the data folder. Because you're definitely going to have the data rejected when you try to push it to github. And every time that happens, it is a 30 minute rabbit hole to try and re-write git history. 
+
+```{r set names}
+# setnames(
+#   x = d,
+#   old = c("age.in.14", "Party", "Gender", "block.num", "treatment.assign", "yvar"),
+#   new = c("age",       "party", "gender", "block",     "treatment",        "vote")
+# )
+```
+
+```{r three party labels}
+three_party_labeler <- function(x) { 
+  Party <- ifelse(
+    x == 'DEM', 'DEM', 
+    ifelse(
+      x == 'REP', 'REP', 
+      'OTHER'))
+  return(Party)
+}
+
+d[ , three_party := three_party_labeler(Party)]
+```
+
+```{r treatment factors} 
+d[ , treatment_f := factor(treatment.assign)]
+d[ , any_letter  := treatment_f != 'Control' ]
+```
+
+Let's start by showing some of the features about the data. There are `r format(d[, .N], big.mark = ',')` observations. Of these, 
+`r format(d[Party == 'DEM' , .N], big.mark = ',')` identify as Democrats (`r d[ , mean(Party == 'DEM')] * 100` percent); 
+`r format(d[Party == 'REP', .N], big.mark = ',')`) identify as Republicans (`r d[ , mean(Party == 'REP')] * 100` percent); and, 
+`r format(d[!(Party %in% c('DEM', 'REP')), .N], big.mark = ',')`) neither identify as Democrat or Republican (`r d[ , mean(!(Party %in% c('DEM', 'REP')))] * 100` percent). 
+
+```{r}
+d %>% 
+  ggplot() + 
+  aes(x = age.in.14, color = three_party) + 
+  geom_density() + 
+  scale_x_continuous(limits = c(17, 100)) + 
+  labs(
+    title = 'Ages of Party Reporters', 
+    subtitle = 'Republicans have more support among older voters', 
+    x = 'Age', y = 'Percent of Voters', 
+    color = 'Party ID', 
+    caption = '"OTHER" include all party preferences, including No Party Preference.'
+  ) 
+
+```
+
+
+## Some questions! 
+
+1. **A Simple Treatment Effect**: Load the data and estimate a `lm` model that compares the rates of turnout in the control group to the rate of turnout among anybody who received *any* letter. This model combines all the letters into a single condition -- "treatment" compared to a single condition "control". Report robust standard errors, and include a narrative sentence or two after your code.  
+
+```{r effect of receiving a letter, message = FALSE, warning = FALSE} 
+library(lmtest)
+library(sandwich)
+library(stargazer)
+library("data.table")
+setDT(d)
+d <- d[, base_assignment := ifelse(treatment.assign=="Control", 0, 1)]
+d[base_assignment ==1, mean(yvar)] - d[base_assignment ==0, mean(yvar)]
+
+d[base_assignment ==1, mean(yvar)]
+d[base_assignment ==0, mean(yvar)]
+
+model_simple <-  d[, lm(yvar ~ base_assignment)]
+summary(model_simple)$coefficients
+
+rse <- coeftest(model_simple, vcov = vcovHC(model_simple, type="HC1"))
+
+rse
+stargazer(
+          model_simple, 
+          se = rse, 
+          type='text',
+          add.lines =list(c('SE','Robust')),
+          column.labels = c("model1"),
+          header = F
+          )
+```
+
+> **Answer: ATE of control is `r coef(model_simple)[1]`. ATE of treatment is `r coef(model_simple)[2] + coef(model_simple)[1]` Total treatment effect is `r coef(model_simple)[2]` Robust standard errors is `r rse`. The impact of treatment has an ATE of `r coef(model_simple)[2] + coef(model_simple)[1]`. It is statistically significant with a p-value of `r summary(model_simple)$coefficients[2,4]`). **
+
+2. **Specific Treatment Effects**: Suppose that you want to know whether different letters have different effects. To begin, what are the effects of each of the letters, as compared to control? Estimate an appropriate linear model and use robust standard errors. 
+
+```{r effect of receiving specific letters, warning = FALSE} 
+model2 <- d[, lm(yvar ~ as.factor(treatment.assign))]
+summary(model2)$coefficients
+rse <- coeftest(model2, vcov = vcovHC(model2, type="HC1"))
+rse
+stargazer(
+          model2, 
+          se = rse, 
+          type='text',
+          add.lines =list(c('SE','Robust')),
+          column.labels = c("model2"),
+          header = F
+          )
+```
+ **Answer: The coefficient for each one of the treatments is very small so it is hard to confirm if any specific letter is much more effective than any other**
+ 
+3. Does the increased flexibilitiy of a different treatment effect for each of the letters improve the performance of the model? Test, using an F-test. What does the evidence suggest, and what does this mean about whether there **are** or **are not** different treatment effects for the different letters?
+
+```{r f-test}
+# anova()
+anova <- anova(model_simple, model2, test='F')
+anova
+```
+
+> **Answer: The p-value is not statistically significant at the 5% confidence level, we cannot deduce that the increased flexibilitiy improves the performance of the model. Both models have similiar statistical power and are not statistically significant. ** 
+
+4. **More Specific Treatment Effects** Is one message more effective than the others? The authors have drawn up this design as a full-factorial design. Write a *specific* test for the difference between the *Partisan* message and the *Election Info* message. Write a *specific* test for the difference between *Top-Two Info* and the *Election Info* message. Report robust standard errors on both tests and include a short narrative statement after your estimates. 
+
+```{r specific treatment effects, warning = FALSE}
+model4_par = d[treatment.assign=='Partisan' | treatment.assign=='Election info', lm(yvar~ treatment.assign)]
+model4_par_se = coeftest(model4_par, vcov = vcovHC(model4_par))
+model4_par_se
+
+model4_top_two = d[treatment.assign=='Top-two info' | treatment.assign=='Election info', lm(yvar~ treatment.assign)]
+model4_top_two_se = coeftest(model4_top_two, vcov = vcovHC(model4_top_two))
+model4_top_two_se
+```
+
+**Answer:  The robust standard errors for Partisan treament is `r model4_par_se[2,2]`. The robust standard errors for Top-Two Info treament is `r model4_top_two_se[2,2]`. None of the models is statistically significant. So we cannot conclude if noe message is more effective than the others**
+
+5. **Blocks? We don't need no stinking blocks?**  The blocks in this data are defined in the `block.num` variable (which you may have renamed). There are a *many* of blocks in this data, none of them are numerical -- they're all category indicators. How many blocks are there? 
+```{r}
+block_num <-d[, .N, by = block.num][, .N]
+```
+
+> So many blocks! There are `r d[ , .I, by = block.num][ , length(unique(block.num))]` if we count them all.
+
+**Answer: There are `r block_num` blocksxs**
+
+6. **SAVE YOUR CODE FIRST** but then try to estimate a `lm` that evaluates the effect of receiving *any letter*, and includes this block-level information. What happens? Why do you think this happens? If this estimate *would have worked* (that's a hint that we don't think it will), what would the block fixed effects have accomplished?
+
+```{r going down with the ship!}
+##
+## SAVE YOUR CODE: before you run the next lines, because it's going 
+##                 to crash you if you're on the r.datahub.
+##                 ... but why does it crash you?
+## 
+
+##model_block_fx  <- d[ , .(vote, any_letter, block)][ , lm(vote ~ any_letter + factor(block))]
+# Error: vector memory exhausted (limit reached?)
+```
+**Answer: We are able to see if different blocks have any impact on voter turnout. But this includes lots of blocks so it is hard to draw any meaningful conclusion.**
+6. Even though we can't estimate this fixed effects model directly, we can get the same information and model improvement if we're *just a little bit clever*. Create a new variable that is the *average turnout within a block* and attach this back to the data.table. Use this new variable in a regression that regresses voting on `any_letter` and this new `block_average`. Then, using an F-test, does the increased information from all these blocks improve the performance of the *causal* model? Use an F-test to check. 
+
+```{r alternate approach}
+d[, avg_block_turnout := mean(yvar), keyby =block.num ]
+model6 <- d[, lm(yvar~ base_assignment + avg_block_turnout)]
+coeftest(model6, vcov = vcovHC(model6))
+
+f_test6<-anova(model_simple, model6, test = 'F')
+f_test6
+```
+**Answer: This could improve the model. P value from the test is statistically significant. So the block fixed effect is predictive of voter turnout**
+7. Doesn't this feel like using a bad-control in your regression? Has the treatment coefficient changed from when you didn't include the `block_average` measure to when you did? Have the standard errors on the treatment coefficient changed from when you didn't include the `block_average` measure to when you did? Why is this OK to do?
+```{r}
+head(d[, .(mean(base_assignment)), by = .(block.num)], 20)
+```
+
+> **Answer: I dont think it is a bad control because of the randomized block assignments. From the output above of means of the first 20 blocks, The mean of each block is almost same. Therefore taking the mean of these blocks and regressing the model on those means is same as taking fixed blocks effects, because of the power of randomization. The treatment coefficient changed but to a very small degree.  The standard errors on the treatment coefficient did not change. I think it is okay because they are not associated with both the outcome and the treatment. They are just associated with the outcome. Therefore, this does not open a back door pathway.**
+
+```{r compare models}
+# stargazer(
+#   fill in with your models
+#   type = 'text'
+# )
+```
+
+```{r plot assessing good/bad control}
+setkeyv(x = d, cols = 'block.num')
+
+d[block.num > 0 , .(
+      prop_control  = mean(treatment_f == 'Control'), 
+      prop_info     = mean(treatment_f == 'Election info'), 
+      prop_top_two  = mean(treatment_f == 'Top-two info'), 
+      prop_partisan = mean(treatment_f == 'Partisan')), 
+    keyby = .(block.num)] %>% 
+  melt(data = ., id.vars = 'block.num') %>% 
+    ggplot() + 
+      aes(x = block.num, y = value, color = variable) + 
+      geom_point() + 
+      facet_wrap(facets = vars(variable), nrow = 2, ncol = 2, scales = 'free')
+```
